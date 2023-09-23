@@ -2,6 +2,7 @@
 import { useDropZone } from "@vueuse/core";
 import Progress from "./Progress.vue";
 import { ref } from "vue";
+import { useFileDialog } from "@vueuse/core";
 import "../firebase";
 import {
   getStorage,
@@ -51,10 +52,8 @@ function onDrop(files) {
       UpProgress.value = Number(progress.toFixed(0));
       switch (snapshot.state) {
         case "paused":
-          console.log("Upload is paused");
           break;
         case "running":
-          console.log("Upload is running");
           break;
       }
     },
@@ -89,10 +88,80 @@ function onDrop(files) {
   );
 }
 const { isOverDropZone } = useDropZone(dropZoneRef, onDrop);
+const { files, open, reset, onChange } = useFileDialog();
+onChange((files) => {
+  /** do something with files */
+  isError.value = false;
+  emit("isLinkGenerated", false);
+  // get file extension
+  const fileExtension = files[0].name.split(".").pop();
+  if (fileExtension === "css") {
+    isCSS.value = true;
+    emit("fileType", "css");
+  } else if (fileExtension === "js") {
+    isJS.value = true;
+    emit("fileType", "js");
+  } else {
+    isCSS.value = false;
+    isJS.value = false;
+    isError.value = true;
+    return false;
+  }
+  isUploading.value = true;
+  // Upload file and metadata to the object 'images/mountains.jpg'
+  const uuid = crypto.randomUUID();
+  const storageRef = Fref(
+    storage,
+    `${fileExtension}/` + `${uuid}+${files[0].name}`
+  );
+  const uploadTask = uploadBytesResumable(storageRef, files[0]);
+  uploadTask.on(
+    "state_changed",
+    (snapshot) => {
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      UpProgress.value = Number(progress.toFixed(0));
+      switch (snapshot.state) {
+        case "paused":
+          break;
+        case "running":
+          break;
+      }
+    },
+    (error) => {
+      // A full list of error codes is available at
+      // https://firebase.google.com/docs/storage/web/handle-errors
+      switch (error.code) {
+        case "storage/unauthorized":
+          // User doesn't have permission to access the object
+          break;
+        case "storage/canceled":
+          // User canceled the upload
+          break;
+
+        // ...
+
+        case "storage/unknown":
+          // Unknown error occurred, inspect error.serverResponse
+          break;
+      }
+    },
+    () => {
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        emit("linkUrl", downloadURL);
+        emit("isLinkGenerated", true);
+        UpProgress.value = 0;
+        isUploading.value = false;
+        isLinkGenerated.value = true;
+        link.value = downloadURL;
+      });
+    }
+  );
+});
 </script>
 
 <template>
   <div
+    @click="open"
     ref="dropZoneRef"
     class="w-full h-96 bg-[#eff0f3] overflow-hidden dark:bg-[#272a2f] flex justify-center items-center rounded-3xl p-10 mt-10 transition-all duration-500 ease-in-out"
   >

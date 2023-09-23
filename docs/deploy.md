@@ -5,11 +5,9 @@ const whichFile = ref('');
 const whichLink = ref('');
 const isLink = ref(false);
 const getLink = (link) => {
-    console.log(link);
     whichLink.value = link;
 } 
 const getFileType = (fileType) => {
-    console.log(fileType);
     whichFile.value = fileType;
 }
 </script>
