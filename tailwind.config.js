@@ -1,4 +1,8 @@
 module.exports = {
-  content: ["./docs/.vitepress/**/*.{js,ts,vue}", "./docs/**/*.md"],
-  safelist: ["w-12", "h-12"],
+  darkMode: "class",
+  content: [
+    "./docs/.vitepress/**/*.{js,ts,vue}",
+    "./docs/**/*.md",
+    "./src/**/*.vue",
+  ],
 };

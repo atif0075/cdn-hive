@@ -1,19 +1,44 @@
 {
-  "hash": "96ef0281",
-  "browserHash": "b093c919",
+  "hash": "72eb6feb",
+  "browserHash": "9661f0c2",
   "optimized": {
     "vue": {
       "src": "../../../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "c8fd34fd",
+      "fileHash": "e342d354",
       "needsInterop": false
     },
     "vitepress > @vue/devtools-api": {
       "src": "../../../../node_modules/@vue/devtools-api/lib/esm/index.js",
       "file": "vitepress___@vue_devtools-api.js",
-      "fileHash": "82ac6093",
+      "fileHash": "02937ef8",
+      "needsInterop": false
+    },
+    "@vueuse/core": {
+      "src": "../../../../node_modules/@vueuse/core/index.mjs",
+      "file": "@vueuse_core.js",
+      "fileHash": "f4219b8e",
+      "needsInterop": false
+    },
+    "firebase/app": {
+      "src": "../../../../node_modules/firebase/app/dist/esm/index.esm.js",
+      "file": "firebase_app.js",
+      "fileHash": "2a87d984",
+      "needsInterop": false
+    },
+    "firebase/storage": {
+      "src": "../../../../node_modules/firebase/storage/dist/esm/index.esm.js",
+      "file": "firebase_storage.js",
+      "fileHash": "cc005fe7",
       "needsInterop": false
     }
   },
-  "chunks": {}
+  "chunks": {
+    "chunk-U3VV56AK": {
+      "file": "chunk-U3VV56AK.js"
+    },
+    "chunk-V634PGSD": {
+      "file": "chunk-V634PGSD.js"
+    }
+  }
 }
