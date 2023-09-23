@@ -12,6 +12,13 @@ export default defineConfig({
         href: "https://raw.githubusercontent.com/atif0075/cdn-hive/49a05395cce27d6c6e586a8522b51dc111ff525b/public/logo.svg",
       },
     ],
+    [
+      "meta",
+      {
+        name: "google-site-verification",
+        content: "ReoTTcKgUwVb6_Ls2uHpr7AnrGBZq_Gf8k7dvKm_Y3c",
+      },
+    ],
   ],
   sitemap: {
     hostname: "https://cdn-hive.vercel.app/",
