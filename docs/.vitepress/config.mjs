@@ -9,7 +9,7 @@ export default defineConfig({
       "link",
       {
         rel: "icon",
-        href: "https://raw.githubusercontent.com/atif0075/cdn-hive/main/public/logo.svg",
+        href: "https://raw.githubusercontent.com/atif0075/cdn-hive/49a05395cce27d6c6e586a8522b51dc111ff525b/public/logo.svg",
       },
     ],
   ],
