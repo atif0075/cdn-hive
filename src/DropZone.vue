@@ -9,27 +9,45 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-
+const emit = defineEmits(["fileType", "linkUrl", "isLinkGenerated"]);
 const storage = getStorage();
 const dropZoneRef = ref(null);
 const UpProgress = ref(0);
 const isUploading = ref(false);
+const isCSS = ref(false);
+const isJS = ref(false);
+const isLinkGenerated = ref(false);
+const link = ref("");
+const isError = ref(false);
 function onDrop(files) {
+  isError.value = false;
+  emit("isLinkGenerated", false);
   // get file extension
-  isUploading.value = true;
   const fileExtension = files[0].name.split(".").pop();
-
+  if (fileExtension === "css") {
+    isCSS.value = true;
+    emit("fileType", "css");
+  } else if (fileExtension === "js") {
+    isJS.value = true;
+    emit("fileType", "js");
+  } else {
+    isCSS.value = false;
+    isJS.value = false;
+    isError.value = true;
+    return false;
+  }
+  isUploading.value = true;
   // Upload file and metadata to the object 'images/mountains.jpg'
-  const storageRef = Fref(storage, `${fileExtension}/` + files[0].name);
+  const uuid = crypto.randomUUID();
+  const storageRef = Fref(
+    storage,
+    `${fileExtension}/` + `${uuid}+${files[0].name}`
+  );
   const uploadTask = uploadBytesResumable(storageRef, files[0]);
-
-  // Listen for state changes, errors, and completion of the upload.
   uploadTask.on(
     "state_changed",
     (snapshot) => {
-      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log("Upload is " + progress + "% done");
       UpProgress.value = Number(progress.toFixed(0));
       switch (snapshot.state) {
         case "paused":
@@ -59,11 +77,13 @@ function onDrop(files) {
       }
     },
     () => {
-      // Upload completed successfully, now we can get the download URL
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        console.log("File available at", downloadURL);
+        emit("linkUrl", downloadURL);
+        emit("isLinkGenerated", true);
         UpProgress.value = 0;
         isUploading.value = false;
+        isLinkGenerated.value = true;
+        link.value = downloadURL;
       });
     }
   );
@@ -116,6 +136,12 @@ const { isOverDropZone } = useDropZone(dropZoneRef, onDrop);
         </div>
       </div>
     </div>
+  </div>
+  <div
+    v-if="isError"
+    class="w-full bg-red-500 text-white overflow-hidden rounded-2xl p-3 mt-5 transition-all duration-500 ease-in-out"
+  >
+    Invalid File Type
   </div>
   <div
     v-if="isUploading"

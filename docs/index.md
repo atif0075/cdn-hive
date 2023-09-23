@@ -19,7 +19,6 @@ hero:
 
 <script setup>
 import { VPTeamMembers } from 'vitepress/theme'
-
 const members = [
   {
     avatar: 'https://www.github.com/atif0075.png',
