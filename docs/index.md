@@ -6,7 +6,7 @@ hero:
   name: "CDN Hive"
   text: "Generate Free CDN,It's Open Source"
   tagline: Your website deserves the best, even if you're on a budget. You can host your CSS, JS files for free. It's Open Source.
-  image: "https://raw.githubusercontent.com/atif0075/cdn-hive/main/public/logo.svg"
+  image: "/public/logo.svg"
   actions:
     - theme: brand
       text: Start Deploying →
