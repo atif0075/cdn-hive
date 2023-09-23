@@ -9,11 +9,11 @@ hero:
   image: "https://raw.githubusercontent.com/atif0075/cdn-hive/main/public/logo.svg"
   actions:
     - theme: brand
-      text: Get Started →
+      text: Start Deploying →
       link: /deploy
     - theme: alt
       text: View on GitHub
-      link: https://github.com/atif0075/v3-tab
+      link: https://github.com/atif0075/cdn-hive
       external: true
 ---
 
